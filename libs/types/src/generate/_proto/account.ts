@@ -1,5 +1,7 @@
 /* eslint-disable */
+import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import * as _m0 from "protobufjs/minimal";
+import { Observable } from "rxjs";
 
 export const protobufPackage = "com.skylinetech.skygate.service.account";
 
@@ -19,6 +21,8 @@ export interface LogoutRequest {
 export interface LogoutResponse {
   success: boolean;
 }
+
+export const COM_SKYLINETECH_SKYGATE_SERVICE_ACCOUNT_PACKAGE_NAME = "com.skylinetech.skygate.service.account";
 
 function createBaseLoginRequest(): LoginRequest {
   return { username: "", password: "" };
@@ -82,16 +86,6 @@ export const LoginRequest = {
     }
     return obj;
   },
-
-  create<I extends Exact<DeepPartial<LoginRequest>, I>>(base?: I): LoginRequest {
-    return LoginRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<LoginRequest>, I>>(object: I): LoginRequest {
-    const message = createBaseLoginRequest();
-    message.username = object.username ?? "";
-    message.password = object.password ?? "";
-    return message;
-  },
 };
 
 function createBaseLoginResponse(): LoginResponse {
@@ -139,15 +133,6 @@ export const LoginResponse = {
       obj.token = message.token;
     }
     return obj;
-  },
-
-  create<I extends Exact<DeepPartial<LoginResponse>, I>>(base?: I): LoginResponse {
-    return LoginResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<LoginResponse>, I>>(object: I): LoginResponse {
-    const message = createBaseLoginResponse();
-    message.token = object.token ?? "";
-    return message;
   },
 };
 
@@ -197,15 +182,6 @@ export const LogoutRequest = {
     }
     return obj;
   },
-
-  create<I extends Exact<DeepPartial<LogoutRequest>, I>>(base?: I): LogoutRequest {
-    return LogoutRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<LogoutRequest>, I>>(object: I): LogoutRequest {
-    const message = createBaseLogoutRequest();
-    message.token = object.token ?? "";
-    return message;
-  },
 };
 
 function createBaseLogoutResponse(): LogoutResponse {
@@ -254,42 +230,36 @@ export const LogoutResponse = {
     }
     return obj;
   },
-
-  create<I extends Exact<DeepPartial<LogoutResponse>, I>>(base?: I): LogoutResponse {
-    return LogoutResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<LogoutResponse>, I>>(object: I): LogoutResponse {
-    const message = createBaseLogoutResponse();
-    message.success = object.success ?? false;
-    return message;
-  },
 };
 
-export interface AccountService<Context extends DataLoaders> {
-  Login(ctx: Context, request: LoginRequest): Promise<LoginResponse>;
-  Logout(ctx: Context, request: LogoutRequest): Promise<LogoutResponse>;
+export interface AccountServiceClient {
+  login(request: LoginRequest): Observable<LoginResponse>;
+
+  logout(request: LogoutRequest): Observable<LogoutResponse>;
 }
 
-export interface DataLoaderOptions {
-  cache?: boolean;
+export interface AccountServiceController {
+  login(request: LoginRequest): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+
+  logout(request: LogoutRequest): Promise<LogoutResponse> | Observable<LogoutResponse> | LogoutResponse;
 }
 
-export interface DataLoaders {
-  rpcDataLoaderOptions?: DataLoaderOptions;
-  getDataLoader<T>(identifier: string, constructorFn: () => T): T;
+export function AccountServiceControllerMethods() {
+  return function (constructor: Function) {
+    const grpcMethods: string[] = ["login", "logout"];
+    for (const method of grpcMethods) {
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcMethod("AccountService", method)(constructor.prototype[method], method, descriptor);
+    }
+    const grpcStreamMethods: string[] = [];
+    for (const method of grpcStreamMethods) {
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcStreamMethod("AccountService", method)(constructor.prototype[method], method, descriptor);
+    }
+  };
 }
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
-
-export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
-
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+export const ACCOUNT_SERVICE_NAME = "AccountService";
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

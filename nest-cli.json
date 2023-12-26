@@ -5,7 +5,16 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/nest-backend/tsconfig.app.json"
+    "tsConfigPath": "apps/nest-backend/tsconfig.app.json",
+    "watchAssets": true,
+    "assets": [
+      "**/*.json",
+      "**/*.proto",
+      "**/*.yml",
+      "**/*.yaml",
+      "**/*.png",
+      "**/*.conf"
+    ]
   },
   "projects": {
     "proto": {
@@ -24,15 +33,6 @@
       "sourceRoot": "libs/core/src",
       "compilerOptions": {
         "tsConfigPath": "libs/core/tsconfig.lib.json"
-      }
-    },
-    "nest-backend": {
-      "type": "application",
-      "root": "apps/nest-backend",
-      "entryFile": "main",
-      "sourceRoot": "apps/nest-backend/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/nest-backend/tsconfig.app.json"
       }
     },
     "service-gateway": {

@@ -11,7 +11,7 @@ mkdir -p ${TEMP_DIR}
 
 # Biên dịch các file .proto vào thư mục tạm
 protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto \
-  --ts_proto_opt=outputEncodeMethods=true,useEnumNames=false,asClass=false,outputJsonMethods=true,context=true,outputNestJs=true,outputClientImpl=false \
+  --ts_proto_opt=outputEncodeMethods=true,useEnumNames=false,asClass=false,outputJsonMethods=true,nestJs=true,outputClientImpl=false \
   ${SRC_DIR} \
   --ts_proto_out=${TEMP_DIR}
 

@@ -1,5 +1,7 @@
 /* eslint-disable */
+import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import * as _m0 from "protobufjs/minimal";
+import { Observable } from "rxjs";
 
 export const protobufPackage = "com.skylinetech.skygate.service.order";
 
@@ -24,6 +26,8 @@ export interface GetOrdersRequest {
 export interface GetOrdersResponse {
   orders: Order[];
 }
+
+export const COM_SKYLINETECH_SKYGATE_SERVICE_ORDER_PACKAGE_NAME = "com.skylinetech.skygate.service.order";
 
 function createBaseGetOrderRequest(): GetOrderRequest {
   return { orderCode: "" };
@@ -70,15 +74,6 @@ export const GetOrderRequest = {
       obj.orderCode = message.orderCode;
     }
     return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetOrderRequest>, I>>(base?: I): GetOrderRequest {
-    return GetOrderRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetOrderRequest>, I>>(object: I): GetOrderRequest {
-    const message = createBaseGetOrderRequest();
-    message.orderCode = object.orderCode ?? "";
-    return message;
   },
 };
 
@@ -127,15 +122,6 @@ export const GetOrderResponse = {
       obj.order = Order.toJSON(message.order);
     }
     return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetOrderResponse>, I>>(base?: I): GetOrderResponse {
-    return GetOrderResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetOrderResponse>, I>>(object: I): GetOrderResponse {
-    const message = createBaseGetOrderResponse();
-    message.order = (object.order !== undefined && object.order !== null) ? Order.fromPartial(object.order) : undefined;
-    return message;
   },
 };
 
@@ -215,17 +201,6 @@ export const Order = {
     }
     return obj;
   },
-
-  create<I extends Exact<DeepPartial<Order>, I>>(base?: I): Order {
-    return Order.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<Order>, I>>(object: I): Order {
-    const message = createBaseOrder();
-    message.orderCode = object.orderCode ?? "";
-    message.orderName = object.orderName ?? "";
-    message.orderStatus = object.orderStatus ?? "";
-    return message;
-  },
 };
 
 function createBaseGetOrdersRequest(): GetOrdersRequest {
@@ -273,15 +248,6 @@ export const GetOrdersRequest = {
       obj.orderStatus = message.orderStatus;
     }
     return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetOrdersRequest>, I>>(base?: I): GetOrdersRequest {
-    return GetOrdersRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetOrdersRequest>, I>>(object: I): GetOrdersRequest {
-    const message = createBaseGetOrdersRequest();
-    message.orderStatus = object.orderStatus ?? "";
-    return message;
   },
 };
 
@@ -331,42 +297,36 @@ export const GetOrdersResponse = {
     }
     return obj;
   },
-
-  create<I extends Exact<DeepPartial<GetOrdersResponse>, I>>(base?: I): GetOrdersResponse {
-    return GetOrdersResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetOrdersResponse>, I>>(object: I): GetOrdersResponse {
-    const message = createBaseGetOrdersResponse();
-    message.orders = object.orders?.map((e) => Order.fromPartial(e)) || [];
-    return message;
-  },
 };
 
-export interface OrderService<Context extends DataLoaders> {
-  GetOrder(ctx: Context, request: GetOrderRequest): Promise<GetOrderResponse>;
-  GetOrders(ctx: Context, request: GetOrdersRequest): Promise<GetOrdersResponse>;
+export interface OrderServiceClient {
+  getOrder(request: GetOrderRequest): Observable<GetOrderResponse>;
+
+  getOrders(request: GetOrdersRequest): Observable<GetOrdersResponse>;
 }
 
-export interface DataLoaderOptions {
-  cache?: boolean;
+export interface OrderServiceController {
+  getOrder(request: GetOrderRequest): Promise<GetOrderResponse> | Observable<GetOrderResponse> | GetOrderResponse;
+
+  getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> | Observable<GetOrdersResponse> | GetOrdersResponse;
 }
 
-export interface DataLoaders {
-  rpcDataLoaderOptions?: DataLoaderOptions;
-  getDataLoader<T>(identifier: string, constructorFn: () => T): T;
+export function OrderServiceControllerMethods() {
+  return function (constructor: Function) {
+    const grpcMethods: string[] = ["getOrder", "getOrders"];
+    for (const method of grpcMethods) {
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcMethod("OrderService", method)(constructor.prototype[method], method, descriptor);
+    }
+    const grpcStreamMethods: string[] = [];
+    for (const method of grpcStreamMethods) {
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcStreamMethod("OrderService", method)(constructor.prototype[method], method, descriptor);
+    }
+  };
 }
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
-
-export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
-
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+export const ORDER_SERVICE_NAME = "OrderService";
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
