@@ -113,7 +113,21 @@
     "webpack": "5.89.0"
   },
   "scripts": {
-    "gen:ts": "sh scripts/gen-proto-ts.sh && sh scripts/gen-schema-ts.sh"
+    "prepare": "husky install",
+    "gen:ts": "sh scripts/gen-proto-ts.sh && sh scripts/gen-schema-ts.sh",
+    "build": "npx nest build",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "start": "npx nest start",
+    "start:dev": "npx nest start --watch",
+    "start:debug": "npx nest start --debug --watch",
+    "check:type": "tsc --project tsconfig.json --noEmit",
+    "lint": "eslint . --ext ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage && cat ./coverage/lcov.info | codacy-coverage --token a5ea7c309f7543a3b7cfc662c1c88d67 --language typescript",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./apps/service-gateway/apps/signals/dfour-microservice-backend/test/jest-e2e.json",
+    "docs": "npx compodoc --theme material --output docs -p tsconfig.json -s"
   },
   "lint-staged": {
     "*.{ts}": [
