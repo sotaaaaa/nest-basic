@@ -18,12 +18,12 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/types": [
-        "libs/types/src"
-      ],
-      "@app/types/*": [
-        "libs/types/src/*"
-      ]
+      "@skylinetech/core": ["libs/core/src"],
+      "@skylinetech/core/*": ["libs/core/src/*"],
+      "@skylinetech/proto": ["libs/proto/src"],
+      "@skylinetech/proto/*": ["libs/proto/src/*"],
+      "@skylinetech/types": ["libs/types/src"],
+      "@skylinetech/types/*": ["libs/types/src/*"]
     }
   }
 }

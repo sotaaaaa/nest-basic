@@ -32,7 +32,8 @@ find $PROJECT_DIR -type f -name "*.schema.ts" | while read -r schema_file; do
     classNode.getProperties().forEach(property => {
         const name = property.getName();
         const type = property.getType().getText(property, tsMorph.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope);
-        interfaceText += '    ' + name + ': ' + type + ';\n';
+        const isOptional = property.hasQuestionToken();
+        interfaceText += '    ' + name + (isOptional ? '?: ' : ': ') + type + ';\n';
     });
     interfaceText += '}';
     require('fs').writeFileSync('$interface_path', interfaceText);

@@ -172,9 +172,9 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "@libs/core": "<rootDir>/libs/core/src",
-      "@libs/proto": "<rootDir>/libs/proto/src",
-      "^@app/types(|/.*)$": "<rootDir>/libs/types/src/$1"
+      "@skylinetech/core": "<rootDir>/libs/core/src",
+      "@skylinetech/proto": "<rootDir>/libs/proto/src",
+      "@skylinetech/types": "<rootDir>/libs/types/src"
     }
   },
   "husky": {
