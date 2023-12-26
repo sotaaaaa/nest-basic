@@ -4,6 +4,7 @@ package com.skylinetech.skygate.service.order;
 
 service OrderService {
     rpc GetOrder(GetOrderRequest) returns (GetOrderResponse) {}
+    rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse) {}
 }
 
 message GetOrderRequest {
@@ -18,4 +19,12 @@ message Order {
     string orderCode = 1;
     string orderName = 2;
     string orderStatus = 3;
+}
+
+message GetOrdersRequest {
+    string orderStatus = 1;
+}
+
+message GetOrdersResponse {
+    repeated Order orders = 1;
 }

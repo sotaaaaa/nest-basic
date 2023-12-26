@@ -17,6 +17,14 @@ export interface Order {
   orderStatus: string;
 }
 
+export interface GetOrdersRequest {
+  orderStatus: string;
+}
+
+export interface GetOrdersResponse {
+  orders: Order[];
+}
+
 function createBaseGetOrderRequest(): GetOrderRequest {
   return { orderCode: "" };
 }
@@ -220,8 +228,123 @@ export const Order = {
   },
 };
 
+function createBaseGetOrdersRequest(): GetOrdersRequest {
+  return { orderStatus: "" };
+}
+
+export const GetOrdersRequest = {
+  encode(message: GetOrdersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.orderStatus !== "") {
+      writer.uint32(10).string(message.orderStatus);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetOrdersRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrdersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.orderStatus = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrdersRequest {
+    return { orderStatus: isSet(object.orderStatus) ? globalThis.String(object.orderStatus) : "" };
+  },
+
+  toJSON(message: GetOrdersRequest): unknown {
+    const obj: any = {};
+    if (message.orderStatus !== "") {
+      obj.orderStatus = message.orderStatus;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrdersRequest>, I>>(base?: I): GetOrdersRequest {
+    return GetOrdersRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrdersRequest>, I>>(object: I): GetOrdersRequest {
+    const message = createBaseGetOrdersRequest();
+    message.orderStatus = object.orderStatus ?? "";
+    return message;
+  },
+};
+
+function createBaseGetOrdersResponse(): GetOrdersResponse {
+  return { orders: [] };
+}
+
+export const GetOrdersResponse = {
+  encode(message: GetOrdersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.orders) {
+      Order.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetOrdersResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetOrdersResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.orders.push(Order.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetOrdersResponse {
+    return { orders: globalThis.Array.isArray(object?.orders) ? object.orders.map((e: any) => Order.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: GetOrdersResponse): unknown {
+    const obj: any = {};
+    if (message.orders?.length) {
+      obj.orders = message.orders.map((e) => Order.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetOrdersResponse>, I>>(base?: I): GetOrdersResponse {
+    return GetOrdersResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetOrdersResponse>, I>>(object: I): GetOrdersResponse {
+    const message = createBaseGetOrdersResponse();
+    message.orders = object.orders?.map((e) => Order.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 export interface OrderService<Context extends DataLoaders> {
   GetOrder(ctx: Context, request: GetOrderRequest): Promise<GetOrderResponse>;
+  GetOrders(ctx: Context, request: GetOrdersRequest): Promise<GetOrdersResponse>;
 }
 
 export interface DataLoaderOptions {
