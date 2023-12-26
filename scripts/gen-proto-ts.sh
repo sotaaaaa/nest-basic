@@ -18,6 +18,9 @@ protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto \
 # Di chuyển các file từ thư mục tạm thời đến thư mục đích
 find ${TEMP_DIR} -type f -name "*.ts" -exec mv {} ${DEST_DIR} \;
 
+# Thay đổi kiểu trả về trong các file TypeScript
+find ${DEST_DIR} -type f -name "*.ts" -exec sed -i '' -e 's/: Promise<\([^>]*\)> | Observable<\([^>]*\)> | \([^>]*\)/: Promise<\1>/g' {} +
+
 # Xóa thư mục tạm thời
 rm -rf ${TEMP_DIR}
 

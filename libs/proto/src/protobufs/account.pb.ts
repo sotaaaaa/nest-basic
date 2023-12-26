@@ -22,6 +22,10 @@ export interface LogoutResponse {
   success: boolean;
 }
 
+export interface LoginWithGoogleRequest {
+  idToken: string;
+}
+
 export const COM_SKYLINETECH_SKYGATE_ACCOUNT_ACCOUNT_PACKAGE_NAME = "com.skylinetech.skygate.account.account";
 
 function createBaseLoginRequest(): LoginRequest {
@@ -232,21 +236,73 @@ export const LogoutResponse = {
   },
 };
 
+function createBaseLoginWithGoogleRequest(): LoginWithGoogleRequest {
+  return { idToken: "" };
+}
+
+export const LoginWithGoogleRequest = {
+  encode(message: LoginWithGoogleRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.idToken !== "") {
+      writer.uint32(10).string(message.idToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LoginWithGoogleRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLoginWithGoogleRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.idToken = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LoginWithGoogleRequest {
+    return { idToken: isSet(object.idToken) ? globalThis.String(object.idToken) : "" };
+  },
+
+  toJSON(message: LoginWithGoogleRequest): unknown {
+    const obj: any = {};
+    if (message.idToken !== "") {
+      obj.idToken = message.idToken;
+    }
+    return obj;
+  },
+};
+
 export interface AccountServiceClient {
   login(request: LoginRequest): Observable<LoginResponse>;
 
   logout(request: LogoutRequest): Observable<LogoutResponse>;
+
+  loginWithGoogle(request: LoginWithGoogleRequest): Observable<LoginResponse>;
 }
 
 export interface AccountServiceController {
-  login(request: LoginRequest): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+  login(request: LoginRequest): Promise<LoginResponse>
 
-  logout(request: LogoutRequest): Promise<LogoutResponse> | Observable<LogoutResponse> | LogoutResponse;
+  logout(request: LogoutRequest): Promise<LogoutResponse>
+
+  loginWithGoogle(request: LoginWithGoogleRequest): Promise<LoginResponse>
 }
 
 export function AccountServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["login", "logout"];
+    const grpcMethods: string[] = ["login", "logout", "loginWithGoogle"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AccountService", method)(constructor.prototype[method], method, descriptor);

@@ -5,6 +5,8 @@ package com.skylinetech.skygate.account.account;
 service AccountService {
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+
+  rpc LoginWithGoogle(LoginWithGoogleRequest) returns (LoginResponse) {}
 }
 
 message LoginRequest {
@@ -22,4 +24,8 @@ message LogoutRequest {
 
 message LogoutResponse {
   bool success = 1;
+}
+
+message LoginWithGoogleRequest {
+  string idToken = 1;
 }

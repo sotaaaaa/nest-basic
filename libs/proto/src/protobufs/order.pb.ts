@@ -306,9 +306,9 @@ export interface OrderServiceClient {
 }
 
 export interface OrderServiceController {
-  getOrder(request: GetOrderRequest): Promise<GetOrderResponse> | Observable<GetOrderResponse> | GetOrderResponse;
+  getOrder(request: GetOrderRequest): Promise<GetOrderResponse>
 
-  getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> | Observable<GetOrdersResponse> | GetOrdersResponse;
+  getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse>
 }
 
 export function OrderServiceControllerMethods() {

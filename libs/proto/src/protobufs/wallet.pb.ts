@@ -118,7 +118,7 @@ export interface AccountWalletServiceClient {
 export interface AccountWalletServiceController {
   getAccountWallet(
     request: GetAccountWalletRequest,
-  ): Promise<GetAccountWalletResponse> | Observable<GetAccountWalletResponse> | GetAccountWalletResponse;
+  ): Promise<GetAccountWalletResponse>
 }
 
 export function AccountWalletServiceControllerMethods() {
