@@ -49,4 +49,4 @@ for file in $INTERFACE_DIR/*.d.ts; do
   echo "export * from './$filename';" >>"$INTERFACE_DIR/index.ts"
 done
 
-echo "All interfaces have been generated."
+echo "All interfaces have been generated in ${INTERFACE_DIR}."
