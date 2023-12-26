@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Đường dẫn nguồn và đích
-SRC_DIR="./libs/proto/src/proto/*.proto"
+SRC_DIR="./libs/proto/src/_proto/*.proto"
 DEST_DIR="./libs/types/src/generate/_proto"
 TEMP_DIR="./libs/types/src/generate/_proto/temp_proto_types"
 
