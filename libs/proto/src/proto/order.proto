@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package com.skylinetech.skygate.service.order;
+
+service OrderService {
+    rpc GetOrder(GetOrderRequest) returns (GetOrderResponse) {}
+}
+
+message GetOrderRequest {
+    string orderCode = 1;
+}
+
+message GetOrderResponse {
+    Order order = 1;
+}
+
+message Order {
+    string orderCode = 1;
+    string orderName = 2;
+    string orderStatus = 3;
+}

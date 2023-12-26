@@ -1,0 +1,28 @@
+# Versioning and metadata
+.git
+.gitignore
+.dockerignore
+*Dockerfile*
+*docker-compose*
+
+# Build dependencies
+dist
+node_modules
+coverage
+kubernetes
+iac
+
+# Environment (contains sensitive data)
+.env
+
+# Files not required for production
+.editorconfig
+Dockerfile
+README.md
+tslint.json
+nodemon.json
+
+# Comment
+*/temp*
+*/*/temp*
+temp?

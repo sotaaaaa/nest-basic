@@ -1,0 +1,166 @@
+{
+  "name": "nest-backend",
+  "version": "1.0.0",
+  "description": "Backend Microservices",
+  "directories": {
+    "doc": "docs"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "@nestjs/schematics": "10.0.3",
+    "@nestjs/testing": "10.3.0",
+    "@types/assert-plus": "1.0.8",
+    "@types/bcrypt": "5.0.2",
+    "@types/cache-manager": "4.0.6",
+    "@types/cron": "2.0.1",
+    "@types/eslint": "8.56.0",
+    "@types/express": "4.17.21",
+    "@types/jest": "29.5.11",
+    "@types/js-yaml": "4.0.9",
+    "@types/lodash": "4.14.202",
+    "@types/mongoose": "5.11.97",
+    "@types/mustache": "4.2.5",
+    "@types/node": "20.10.5",
+    "@types/passport-jwt": "3.0.13",
+    "@types/pdfmake": "0.2.8",
+    "@types/supertest": "6.0.1",
+    "@types/throttle-debounce": "^5.0.2",
+    "@types/uuid": "9.0.7",
+    "@typescript-eslint/eslint-plugin": "6.16.0",
+    "@typescript-eslint/parser": "6.16.0",
+    "eslint": "8.56.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-prettier": "5.1.2",
+    "husky": "8.0.3",
+    "jest": "29.7.0",
+    "lint-staged": "15.2.0",
+    "pino-pretty": "10.3.0",
+    "prettier": "3.1.1",
+    "supertest": "6.3.3",
+    "ts-jest": "29.1.1",
+    "ts-morph": "^21.0.1",
+    "ts-node": "10.9.2",
+    "ts-proto": "^1.165.2",
+    "ts-protoc-gen": "^0.15.0",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "5.3.3"
+  },
+  "dependencies": {
+    "@grpc/proto-loader": "^0.7.10",
+    "@nestjs-modules/mailer": "1.10.3",
+    "@nestjs/axios": "^3.0.1",
+    "@nestjs/bull": "^10.0.1",
+    "@nestjs/cli": "^10.2.1",
+    "@nestjs/common": "10.3.0",
+    "@nestjs/config": "3.1.1",
+    "@nestjs/core": "10.3.0",
+    "@nestjs/jwt": "10.2.0",
+    "@nestjs/mapped-types": "^2.0.4",
+    "@nestjs/microservices": "10.3.0",
+    "@nestjs/mongoose": "10.0.2",
+    "@nestjs/passport": "10.0.3",
+    "@nestjs/platform-express": "10.3.0",
+    "@nestjs/platform-socket.io": "^10.3.0",
+    "@nestjs/schedule": "4.0.0",
+    "@nestjs/terminus": "10.2.0",
+    "@nestjs/throttler": "5.1.1",
+    "@nestjs/websockets": "10.3.0",
+    "@socket.io/redis-adapter": "^8.2.1",
+    "@types/shortid": "^0.0.32",
+    "assert-plus": "1.0.0",
+    "axios": "^1.6.2",
+    "bcrypt": "^5.1.1",
+    "bull": "^4.12.0",
+    "camel-case": "4.1.2",
+    "class-transformer": "0.5.1",
+    "class-validator": "0.14.0",
+    "dayjs": "1.11.10",
+    "elastic-apm-node": "^4.3.0",
+    "exceljs": "4.4.0",
+    "form-data": "4.0.0",
+    "google-protobuf": "^3.21.2",
+    "i": "0.3.7",
+    "ip2location-nodejs": "9.6.1",
+    "js-yaml": "4.1.0",
+    "keycloak-connect": "^23.0.3",
+    "lodash": "4.17.21",
+    "mongoose": "8.0.3",
+    "mustache": "4.2.0",
+    "nestjs-minio-client": "^2.2.0",
+    "nestjs-pino": "3.5.0",
+    "nestjs-real-ip": "3.0.1",
+    "object-sizeof": "^2.6.3",
+    "onesignal-node": "3.4.0",
+    "passport": "0.7.0",
+    "passport-jwt": "4.0.1",
+    "pdfkit": "0.14.0",
+    "pdfmake": "0.2.8",
+    "pino-http": "8.6.0",
+    "protobufjs": "^7.2.5",
+    "randomcolor": "^0.6.2",
+    "redis": "4.6.12",
+    "reflect-metadata": "0.2.1",
+    "rimraf": "5.0.5",
+    "rxjs": "7.8.1",
+    "shortid": "^2.2.16",
+    "socket.io": "^4.7.2",
+    "throttle-debounce": "^5.0.0",
+    "totp-generator": "0.0.14",
+    "ts-loader": "9.5.1",
+    "unorm": "^1.6.0",
+    "uuid": "9.0.1",
+    "uuidv4": "6.2.13",
+    "webpack": "5.89.0"
+  },
+  "scripts": {
+    "gen:ts": "sh scripts/gen-proto-ts.sh && sh scripts/gen-schema-ts.sh"
+  },
+  "lint-staged": {
+    "*.{ts}": [
+      "eslint . --cache"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sotaaaaa/nest-backend.git"
+  },
+  "author": "Sota Tech",
+  "license": "ISC",
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "modulePaths": [
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "roots": [
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "@libs/core": "<rootDir>/libs/core/src",
+      "@libs/proto": "<rootDir>/libs/proto/src",
+      "^@app/types(|/.*)$": "<rootDir>/libs/types/src/$1"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn format"
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/nest-backend/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/nest-backend/tsconfig.app.json"
+  },
+  "projects": {
+    "proto": {
+      "type": "library",
+      "root": "libs/proto",
+      "entryFile": "index",
+      "sourceRoot": "libs/proto/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/proto/tsconfig.lib.json"
+      }
+    },
+    "core": {
+      "type": "library",
+      "root": "libs/core",
+      "entryFile": "index",
+      "sourceRoot": "libs/core/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/core/tsconfig.lib.json"
+      }
+    },
+    "nest-backend": {
+      "type": "application",
+      "root": "apps/nest-backend",
+      "entryFile": "main",
+      "sourceRoot": "apps/nest-backend/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/nest-backend/tsconfig.app.json"
+      }
+    },
+    "service-gateway": {
+      "type": "application",
+      "root": "apps/service-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/service-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/service-gateway/tsconfig.app.json"
+      }
+    },
+    "service-account": {
+      "type": "application",
+      "root": "apps/service-account",
+      "entryFile": "main",
+      "sourceRoot": "apps/service-account/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/service-account/tsconfig.app.json"
+      }
+    },
+    "types": {
+      "type": "library",
+      "root": "libs/types",
+      "entryFile": "index",
+      "sourceRoot": "libs/types/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/types/tsconfig.lib.json"
+      }
+    }
+  },
+  "monorepo": true,
+  "root": "apps/nest-backend"
+}
