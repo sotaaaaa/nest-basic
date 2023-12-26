@@ -4,6 +4,8 @@
   "editor.tabSize": 2,
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.codeLens": true,
+  "clang-format.executable": "/usr/local/bin/clang-format",
+  "clang-format.style": "{ IndentWidth: 2, BasedOnStyle: google, AlignConsecutiveAssignments: true, ColumnLimit: 90 }",
   "better-comments.tags": [
     {
       "tag": "!",

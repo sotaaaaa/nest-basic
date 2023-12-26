@@ -1,2 +1,2 @@
-export * from './_proto';
-export * from './_schema';
+export * from './_protos';
+export * from './_schemas';

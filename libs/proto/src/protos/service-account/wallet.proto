@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package com.skylinetech.skygate.account.wallet;
+
+service AccountWalletService {
+  rpc GetAccountWallet(GetAccountWalletRequest) returns (GetAccountWalletResponse) {}
+}
+
+message GetAccountWalletRequest {
+  string account_id = 1;
+}
+
+message GetAccountWalletResponse {
+  string account_wallet = 1;
+}
