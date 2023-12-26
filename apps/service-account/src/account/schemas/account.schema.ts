@@ -15,7 +15,7 @@ export class AccountDocument extends Document {
   @Prop({ type: String, index: true, unique: true })
   accountEmail?: string;
 
-  @Prop({ type: String, index: true })
+  @Prop({ type: String })
   accountPhone?: string;
 }
 
