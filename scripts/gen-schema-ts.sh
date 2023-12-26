@@ -4,7 +4,7 @@
 PROJECT_DIR="./apps"
 
 # Đường dẹn đến thư mục đầu ra cho interfaces
-INTERFACE_DIR="./libs/types/src/schema"
+INTERFACE_DIR="./libs/types/src/generate/_schema"
 
 # Tạo thư mục đích nếu nó không tồn tại
 mkdir -p "$INTERFACE_DIR"
@@ -42,11 +42,25 @@ find $PROJECT_DIR -type f -name "*.schema.ts" | while read -r schema_file; do
   npx prettier --write "$interface_path" || exit 1
 done
 
-# Tạo file index.ts và thêm các lệnh export
+# Kiểm tra xem có file .d.ts nào trong thư mục không
+shopt -s nullglob
+files=($INTERFACE_DIR/*.d.ts)
+
+# Tạo file index.ts
 echo "// Auto-generated index file" >"$INTERFACE_DIR/index.ts"
-for file in $INTERFACE_DIR/*.d.ts; do
-  filename=$(basename -- "$file" .d.ts)
-  echo "export * from './$filename';" >>"$INTERFACE_DIR/index.ts"
-done
+
+if [ ${#files[@]} -eq 0 ]; then
+  # Không có file .d.ts, tạo index.ts với nội dung mặc định
+  echo "export * from './';" >>"$INTERFACE_DIR/index.ts"
+else
+  # Có file .d.ts, tạo các lệnh export
+  for file in "${files[@]}"; do
+    filename=$(basename -- "$file" .d.ts)
+    echo "export * from './$filename';" >>"$INTERFACE_DIR/index.ts"
+  done
+fi
+
+# Tắt nullglob
+shopt -u nullglob
 
 echo "All interfaces have been generated in ${INTERFACE_DIR}."

@@ -1,2 +1,1 @@
-export * from './proto';
-export * from './schema';
+export * from './generate';

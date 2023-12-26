@@ -2,8 +2,8 @@
 
 # Đường dẫn nguồn và đích
 SRC_DIR="./libs/proto/src/proto/*.proto"
-DEST_DIR="./libs/types/src/proto"
-TEMP_DIR="./libs/types/src/proto/temp_proto_types"
+DEST_DIR="./libs/types/src/generate/_proto"
+TEMP_DIR="./libs/types/src/generate/_proto/temp_proto_types"
 
 # Tạo thư mục tạm và đích nếu chúng không tồn tại
 mkdir -p ${DEST_DIR}
