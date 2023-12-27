@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Đường dẫn nguồn và đích
-SRC_DIR="./libs/proto/src/protos/**/*.proto"
-DEST_DIR="./libs/proto/src/protobufs"
-TEMP_DIR="./libs/proto/src/protobufs/temp_proto_types"
+SRC_DIR="./libs/protobuf/src/protos/**/*.proto"
+DEST_DIR="./libs/protobuf/src/protobufs"
+TEMP_DIR="./libs/protobuf/src/protobufs/temp_proto_types"
 
 # Tạo thư mục tạm và đích nếu chúng không tồn tại
 mkdir -p ${DEST_DIR}
