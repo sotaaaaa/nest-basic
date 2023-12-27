@@ -1,6 +1,7 @@
+import { globSync } from 'glob';
 import { INestApplication, Logger } from '@nestjs/common';
 import { BaseTransporter } from './base.transport';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { GrpcOptions, Transport } from '@nestjs/microservices';
 import {
   ServiceBootstrapOptions,
   TransportSetupOtions,
@@ -36,6 +37,7 @@ export class GrpcTransporter extends BaseTransporter {
    */
   protected setupTransporter(): void {
     const configs = this.getTransporterConfigs(this.options);
+    const protoPath = globSync(configs.options.protoPath);
 
     // If the transporter is not enabled, return.
     if (!configs.enable) {
@@ -43,8 +45,8 @@ export class GrpcTransporter extends BaseTransporter {
     }
 
     // Setup the transporter.
-    this.application.connectMicroservice<MicroserviceOptions>(
-      { transport: Transport.GRPC, options: configs.options },
+    this.application.connectMicroservice<GrpcOptions>(
+      { transport: Transport.GRPC, options: { ...configs.options, protoPath } },
       { inheritAppConfig: true },
     );
 
