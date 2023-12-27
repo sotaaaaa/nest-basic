@@ -1,4 +1,4 @@
-export * from './apm.module';
+export * from './elastic-apm.module';
 export * from './constants';
 export * from './intercepters';
 export * from './types';

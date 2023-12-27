@@ -14,7 +14,7 @@ import {
 } from './constants';
 import { Model } from 'mongoose';
 import crypto from 'crypto';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 // Tạo ra 1 biến global để lưu cache query3
 // Sẽ chỉ lưu cache tối đa trong vòng 5 phút và lưu tối đa 1000 cache

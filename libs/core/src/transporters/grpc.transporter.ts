@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { BaseTransporter } from './base.transport';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import {
@@ -49,6 +49,6 @@ export class GrpcTransporter extends BaseTransporter {
     );
 
     // Start the transporter.
-    this.logger.log('Starting the gRPC transporter...');
+    this.logger.log('GRPC transporter initialized');
   }
 }

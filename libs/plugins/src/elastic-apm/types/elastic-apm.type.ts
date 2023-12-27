@@ -1,11 +1,11 @@
-import { ApmService } from '../services/elastic-apm.service';
+import { ElasticApmService } from '../services/elastic-apm.service';
 import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
 // Abstract class for ApmInterceptorConstructor
 export abstract class ApmInterceptorConstructor implements NestInterceptor {
   protected constructor(
-    protected readonly apmService: ApmService,
+    protected readonly elasticApmService: ElasticApmService,
     protected readonly mapFunction?: (request: any) => UserContextKeys,
   ) {}
 

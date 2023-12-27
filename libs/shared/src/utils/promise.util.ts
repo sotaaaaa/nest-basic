@@ -1,5 +1,5 @@
 import assert from 'assert';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 export class PromiseUtils {
   /**

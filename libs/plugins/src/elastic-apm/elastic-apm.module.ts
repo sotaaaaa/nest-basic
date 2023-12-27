@@ -1,17 +1,17 @@
 import { ConfigService } from '@nestjs/config';
-import { ApmErrorInterceptor } from './intercepters/apm-error.intercepter';
-import { ApmService } from './services/elastic-apm.service';
+import { ElasticApmErrorInterceptor } from './intercepters/apm-error.intercepter';
+import { ElasticApmService } from './services/elastic-apm.service';
 import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
 import { APM_OPTIONS, APM_INSTANCE } from './constants';
 import { FactoryProvider } from '@nestjs/common/interfaces';
 
 const providers: Provider[] = [
-  ApmService,
-  ApmErrorInterceptor,
+  ElasticApmService,
+  ElasticApmErrorInterceptor,
   {
     provide: APM_INSTANCE,
-    useFactory: (apmService: ApmService) => apmService.instance,
-    inject: [ApmService],
+    useFactory: (elasticApmService: ElasticApmService) => elasticApmService.instance,
+    inject: [ElasticApmService],
   },
 ];
 
@@ -34,7 +34,7 @@ export class ElasticApmPluginModule {
     };
 
     return {
-      exports: [ApmService, APM_INSTANCE, APM_OPTIONS],
+      exports: [ElasticApmService, APM_INSTANCE, APM_OPTIONS],
       module: ElasticApmPluginModule,
       providers: [asyncProviders, ...providers],
     };

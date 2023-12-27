@@ -1,7 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AccountModule } from './account/account.module';
+import { BootstrapModule } from '@skylinetech/core';
 
 @Module({
-  imports: [AccountModule],
+  imports: [
+    BootstrapModule.register({
+      path: process.env.configfile || 'apps/service-account/service.config.yaml',
+      plugins: [],
+    }),
+  ],
 })
 export class ServiceModule {}

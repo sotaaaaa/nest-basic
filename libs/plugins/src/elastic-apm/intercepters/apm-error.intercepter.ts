@@ -1,4 +1,4 @@
-import { ApmService } from '../services/elastic-apm.service';
+import { ElasticApmService } from '../services/elastic-apm.service';
 import {
   CallHandler,
   ExecutionContext,
@@ -9,8 +9,8 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
-export class ApmErrorInterceptor implements NestInterceptor {
-  constructor(protected readonly apmService: ApmService) {}
+export class ElasticApmErrorInterceptor implements NestInterceptor {
+  constructor(protected readonly apmService: ElasticApmService) {}
 
   /**
    * Intercepts the execution context and handles errors by capturing them with ApmService.

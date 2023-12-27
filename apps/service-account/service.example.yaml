@@ -1,0 +1,56 @@
+# Version package: 1.0
+# Tùy từng phiên bản sẽ có các cấu hình khác nhau
+version: 1.0
+
+# Danh sách các configs của application tại đây
+# Lấy được thông qua configService mặc định của Nest.js
+# Ví dụ: configService.get('configs.key_nested')
+configs:
+
+# Danh sách các cấu hình của application khi dùng thư viện @sotaaaaa/nest-core
+# Cấu hình sẽ được thay đổi động theo từng ứng dụng khác nhau
+application:
+  # Cấu hình port ứng dụng
+  # Trường hợp không điền port sẽ random một port ngẫu nhiên khi khởi động
+  port: ${PORT}
+
+  # Cấu hình môi trường đang chạy
+  # Mặc định là local
+  # Có thể thay đổi bằng cách thêm biến môi trường NODE_ENV=local
+  # Trường hợp không điền sẽ lấy giá trị mặc định là local
+  env: ${NODE_ENV}
+
+# Cấu hình này được thêm bởi 2 thư viện @sotaaaaa/nest-nats và @sotaaaaa/nest-kafka
+# Cấu hình transporter khi sử dụng 2 thư viện ở trên
+transporters:
+  # Cấu hình GRPC
+  # Timeout là thời gian chờ response khi gửi message
+  grpc:
+    enable: true
+    options:
+      package: com.skylinetech.service.account
+      protoPath:
+        - libs/protobuf/src/protos/service-account/account.proto
+        - libs/protobuf/src/protos/service-account/wallet.proto
+    timeout: 30000
+
+# Cấu hình này được thêm bởi thư viện @sotaaaaa/nest-mongoose
+# Có thể tạo nhiều kết nối đến nhiều database cùng một lúc
+# Tham khảo các trường options tại đây https://mongoosejs.com/docs/connections.html
+database:
+  mongoose:
+    - connectionName: ${DATABASE_CONNECTION_NAME}
+      uri: mongodb://localhost:27017/service-buyer
+      options:
+        useNewUrlParser: true
+        useUnifiedTopology: true
+        connectTimeoutMS: 5000
+
+# Cấu hình này phục vụ trong theo dõi các request đến ứng dụng
+# Có thể tắt bằng cách thêm biến môi trường APM_ACTIVE=false
+APM:
+  serviceName: service-account
+  serverUrl: https://86c2a0a2948948b6ba8f0622915a97fc.apm.asia-southeast1.gcp.elastic-cloud.com:443
+  secretToken: ${APM_SERVER_SECRET_TOKEN}
+  environment: ${NODE_ENV}
+  active: false

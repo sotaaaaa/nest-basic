@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
-import fs from 'fs';
-import mustache from 'mustache';
-import yaml from 'js-yaml';
+import * as fs from 'fs';
+import * as mustache from 'mustache';
+import * as yaml from 'js-yaml';
 
 export class AppUtils {
   /**
@@ -9,16 +9,29 @@ export class AppUtils {
    * @param app - The instance of the Nest application.
    */
   public static killAppWithGrace = (app: INestApplication) => {
+    // Xử lý khi nhận tín hiệu SIGINT (Ctrl + C trên bàn phím)
     process.on('SIGINT', async () => {
+      console.log('Received SIGINT signal. Gracefully shutting down...');
+
+      // Đặt một thời gian chờ rồi mới thoát ứng dụng
       setTimeout(() => process.exit(1), 100);
+
+      // Đóng ứng dụng NestJS
       await app.close();
+      console.log('Application closed.');
       process.exit(0);
     });
 
-    // Kill -15
+    // Xử lý khi nhận tín hiệu SIGTERM (Tín hiệu terminate)
     process.on('SIGTERM', async () => {
+      console.log('Received SIGTERM signal. Gracefully shutting down...');
+
+      // Đặt một thời gian chờ rồi mới thoát ứng dụng
       setTimeout(() => process.exit(1), 100);
+
+      // Đóng ứng dụng NestJS
       await app.close();
+      console.log('Application closed.');
       process.exit(0);
     });
   };

@@ -1,13 +1,13 @@
 import { APM_OPTIONS } from '../constants/elastic-apm.constant';
 import { ApmFilter, ApmError } from '../types/elastic-apm.type';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import APM from 'elastic-apm-node';
+import * as APM from 'elastic-apm-node';
 
 /**
  * A service for interacting with Elastic APM.
  */
 @Injectable()
-export class ApmService {
+export class ElasticApmService {
   public instance: APM.Agent;
   public logger = new Logger(this.constructor.name);
 
@@ -19,7 +19,7 @@ export class ApmService {
     @Inject(APM_OPTIONS)
     private readonly options: APM.AgentConfigOptions,
   ) {
-    this.logger.log('ApmPlugin initialized');
+    this.logger.log('Elastic APM Plugin initialized');
     this.instance = APM.start(options);
   }
 

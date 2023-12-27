@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package com.skylinetech.skygate.account.account;
+package com.skylinetech.service.account;
 
 service AccountService {
   rpc Login(LoginRequest) returns (LoginResponse) {}
