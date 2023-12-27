@@ -17,13 +17,13 @@
     ]
   },
   "projects": {
-    "proto": {
+    "protobuf": {
       "type": "library",
-      "root": "libs/proto",
+      "root": "libs/protobuf",
       "entryFile": "index",
-      "sourceRoot": "libs/proto/src",
+      "sourceRoot": "libs/protobuf/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/proto/tsconfig.lib.json"
+        "tsConfigPath": "libs/protobuf/tsconfig.lib.json"
       }
     },
     "core": {
@@ -60,6 +60,24 @@
       "sourceRoot": "libs/types/src",
       "compilerOptions": {
         "tsConfigPath": "libs/types/tsconfig.lib.json"
+      }
+    },
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    },
+    "plugins": {
+      "type": "library",
+      "root": "libs/plugins",
+      "entryFile": "index",
+      "sourceRoot": "libs/plugins/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/plugins/tsconfig.lib.json"
       }
     }
   },

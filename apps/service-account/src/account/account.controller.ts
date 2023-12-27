@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { AccountServiceControllerMethods } from '@skylinetech/proto/protobufs/account.pb';
+import { AccountServiceControllerMethods } from 'libs/protobuf/src/protobufs/account.pb';
 
 @Controller()
 @AccountServiceControllerMethods()

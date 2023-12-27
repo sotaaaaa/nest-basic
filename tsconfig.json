@@ -20,8 +20,12 @@
     "paths": {
       "@skylinetech/core": ["libs/core/src"],
       "@skylinetech/core/*": ["libs/core/src/*"],
-      "@skylinetech/proto": ["libs/proto/src"],
-      "@skylinetech/proto/*": ["libs/proto/src/*"],
+      "@skylinetech/protobuf": ["libs/protobuf/src"],
+      "@skylinetech/protobuf/*": ["libs/protobuf/src/*"],
+      "@skylinetech/plugins": ["libs/plugins/src"],
+      "@skylinetech/plugins/*": ["libs/plugins/src/*"],
+      "@skylinetech/shared": ["libs/shared/src"],
+      "@skylinetech/shared/*": ["libs/shared/src/*"],
       "@skylinetech/types": ["libs/types/src"],
       "@skylinetech/types/*": ["libs/types/src/*"]
     }

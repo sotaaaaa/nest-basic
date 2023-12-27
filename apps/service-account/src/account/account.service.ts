@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   AccountServiceClient,
   LoginRequest,
-} from '@skylinetech/proto/protobufs/account.pb';
+} from 'libs/protobuf/src/protobufs/account.pb';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()

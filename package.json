@@ -173,7 +173,9 @@
     ],
     "moduleNameMapper": {
       "@skylinetech/core": "<rootDir>/libs/core/src",
-      "@skylinetech/proto": "<rootDir>/libs/proto/src",
+      "@skylinetech/protobuf": "<rootDir>/libs/protobuf/src",
+      "@skylinetech/plugins": "<rootDir>/libs/plugins/src",
+      "@skylinetech/shared": "<rootDir>/libs/shared/src",
       "@skylinetech/types": "<rootDir>/libs/types/src"
     }
   },
