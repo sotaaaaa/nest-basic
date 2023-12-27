@@ -16,14 +16,14 @@ const providers: Provider[] = [
 ];
 
 /**
- * Mô-đun ApmPluginModule được sử dụng để tích hợp và cấu hình APM (Application Performance Monitoring) trong ứng dụng.
- * Mô-đun này cung cấp một phương thức tĩnh `forPlugin()` để tạo một mô-đun động cho việc tích hợp APM.
+ * Module ApmPluginModule được sử dụng để tích hợp và cấu hình APM (Application Performance Monitoring) trong ứng dụng.
+ * Module này cung cấp một phương thức tĩnh `forPlugin()` để tạo một module động cho việc tích hợp APM.
  */
 @Global()
 @Module({})
-export class ApmPluginModule {
+export class ElasticApmPluginModule {
   /**
-   * Phương thức tạo mô-đun động ApmPluginModule cho việc tích hợp APM.
+   * Phương thức tạo module động ApmPluginModule cho việc tích hợp APM.
    * @returns Một đối tượng DynamicModule chứa các cấu hình và providers cần thiết cho việc tích hợp APM.
    */
   public static forPlugin(): DynamicModule {
@@ -35,7 +35,7 @@ export class ApmPluginModule {
 
     return {
       exports: [ApmService, APM_INSTANCE, APM_OPTIONS],
-      module: ApmPluginModule,
+      module: ElasticApmPluginModule,
       providers: [asyncProviders, ...providers],
     };
   }
