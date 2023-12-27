@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Logger } from '@nestjs/common';
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 
@@ -10,27 +10,27 @@ export class AppUtils {
   public static killAppWithGrace = (app: INestApplication) => {
     // Xử lý khi nhận tín hiệu SIGINT (Ctrl + C trên bàn phím)
     process.on('SIGINT', async () => {
-      console.log('Received SIGINT signal. Gracefully shutting down...');
+      Logger.log('Received SIGINT signal. Gracefully shutting down...');
 
       // Đặt một thời gian chờ rồi mới thoát ứng dụng
       setTimeout(() => process.exit(1), 100);
 
       // Đóng ứng dụng NestJS
       await app.close();
-      console.log('Application closed.');
+      Logger.log('Application closed with SIGINT.');
       process.exit(0);
     });
 
     // Xử lý khi nhận tín hiệu SIGTERM (Tín hiệu terminate)
     process.on('SIGTERM', async () => {
-      console.log('Received SIGTERM signal. Gracefully shutting down...');
+      Logger.log('Received SIGTERM signal. Gracefully shutting down...');
 
       // Đặt một thời gian chờ rồi mới thoát ứng dụng
       setTimeout(() => process.exit(1), 100);
 
       // Đóng ứng dụng NestJS
       await app.close();
-      console.log('Application closed.');
+      Logger.log('Application closed with SIGTERM.');
       process.exit(0);
     });
   };
