@@ -4,9 +4,11 @@ import { BootstrapModule } from '@skylinetech/core';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: 'apps/service-account/.env' }),
+    ConfigModule.forRoot({
+      envFilePath: process.env.ENV_FILE_PATH || 'apps/service-account/.env',
+    }),
     BootstrapModule.register({
-      path: process.env.configfile || 'apps/service-account/service.config.yaml',
+      path: process.env.CONFIG_FILE_PATH || 'apps/service-account/service.config.yaml',
       plugins: [],
     }),
   ],
