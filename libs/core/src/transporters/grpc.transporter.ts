@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Logger } from '@nestjs/common';
 import { BaseTransporter } from './base.transport';
 import * as _ from 'lodash';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
@@ -39,7 +39,7 @@ export class GrpcTransporter extends BaseTransporter {
 
     // If the transporter is not enabled, return.
     if (!configs.enable) {
-      return;
+      return Logger.log('GRPC transporter is not enabled');
     }
 
     // Setup the transporter.
