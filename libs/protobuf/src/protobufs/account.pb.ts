@@ -3,7 +3,7 @@ import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import * as _m0 from "protobufjs/minimal";
 import { Observable } from "rxjs";
 
-export const protobufPackage = "com.skylinetech.skygate.account.account";
+export const protobufPackage = "com.skylinetech.service.account";
 
 export interface LoginRequest {
   username: string;
@@ -26,7 +26,7 @@ export interface LoginWithGoogleRequest {
   idToken: string;
 }
 
-export const COM_SKYLINETECH_SKYGATE_ACCOUNT_ACCOUNT_PACKAGE_NAME = "com.skylinetech.skygate.account.account";
+export const COM_SKYLINETECH_SERVICE_ACCOUNT_PACKAGE_NAME = "com.skylinetech.service.account";
 
 function createBaseLoginRequest(): LoginRequest {
   return { username: "", password: "" };

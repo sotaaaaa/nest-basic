@@ -3,7 +3,7 @@ import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import * as _m0 from "protobufjs/minimal";
 import { Observable } from "rxjs";
 
-export const protobufPackage = "com.skylinetech.skygate.account.wallet";
+export const protobufPackage = "com.skylinetech.service.account";
 
 export interface GetAccountWalletRequest {
   accountId: string;
@@ -13,7 +13,7 @@ export interface GetAccountWalletResponse {
   accountWallet: string;
 }
 
-export const COM_SKYLINETECH_SKYGATE_ACCOUNT_WALLET_PACKAGE_NAME = "com.skylinetech.skygate.account.wallet";
+export const COM_SKYLINETECH_SERVICE_ACCOUNT_PACKAGE_NAME = "com.skylinetech.service.account";
 
 function createBaseGetAccountWalletRequest(): GetAccountWalletRequest {
   return { accountId: "" };

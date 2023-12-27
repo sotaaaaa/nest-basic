@@ -28,10 +28,10 @@ transporters:
   grpc:
     enable: true
     options:
-      package: com.skylinetech.service.account
+      package: ${PROTO_PACKAGE_NAME}
       protoPath:
-        - libs/protobuf/src/protos/service-account/account.proto
-        - libs/protobuf/src/protos/service-account/wallet.proto
+        - ${PROTO_FOLDER_PATH}/service-account/account.proto
+        - ${PROTO_FOLDER_PATH}/service-account/wallet.proto
     timeout: 30000
 
 # Cấu hình này được thêm bởi thư viện @sotaaaaa/nest-mongoose

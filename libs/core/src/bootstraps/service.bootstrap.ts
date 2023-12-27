@@ -35,5 +35,11 @@ export async function serviceBootstrap(
   const serviceName = options.serviceName;
   const serviceUrl = await application.getUrl();
 
+  // Tính toán thêm thời gian khởi động application
+  const bootTime = process.uptime();
+  const bootTimeStr = bootTime.toFixed(2);
+
+  // Log the service information.
   Logger.log(`Service ${serviceName} running on: ${serviceUrl}`);
+  Logger.log(`Service ${serviceName} started in ${bootTimeStr}s`);
 }
