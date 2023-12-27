@@ -83,6 +83,7 @@
     "exceljs": "4.4.0",
     "form-data": "4.0.0",
     "google-protobuf": "^3.21.2",
+    "heap-js": "^2.3.0",
     "i": "0.3.7",
     "ip2location-nodejs": "9.6.1",
     "js-yaml": "4.1.0",
