@@ -1,12 +1,11 @@
 import { INestApplication, Logger } from '@nestjs/common';
 import { BaseTransporter } from './base.transport';
-import * as _ from 'lodash';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-
 import {
   ServiceBootstrapOptions,
   TransportSetupOtions,
 } from './../bootstraps/types/bootstrap.type';
+import * as _ from 'lodash';
 
 export class GrpcTransporter extends BaseTransporter {
   constructor(app: INestApplication, options: ServiceBootstrapOptions) {
@@ -33,6 +32,7 @@ export class GrpcTransporter extends BaseTransporter {
 
   /**
    * Setup the gRPC transporter.
+   * Logic for setting up the transporter goes here.
    */
   protected setupTransporter(): void {
     const configs = this.getTransporterConfigs(this.options);
@@ -48,7 +48,7 @@ export class GrpcTransporter extends BaseTransporter {
       { inheritAppConfig: true },
     );
 
-    // Start the transporter.
+    // Log the transporter initialization.
     this.logger.log('GRPC transporter initialized');
   }
 }

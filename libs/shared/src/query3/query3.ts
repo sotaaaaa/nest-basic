@@ -162,7 +162,7 @@ export class Query3<T> {
    * @param query
    * @param options
    */
-  async query3WithNormal(query: QueryParse, options?: Query3Options<T>) {
+  async queryWithNormal(query: QueryParse, options?: Query3Options<T>) {
     const { populate, queryMongoose } = options || {};
     const { filter, limit, offset, sort, count, justOne } = this.parseQuery(query || {});
 
@@ -250,7 +250,7 @@ export class Query3<T> {
 
   // Hàm này sẽ kiểm tra cacheTimeMs có tồn tại hay không, nếu có sẽ thực hiện cache dữ liệu theo thời gian
   // Nếu không sẽ thực hiện query database
-  async query3WithCache(
+  async queryWithCache(
     query: QueryParse,
     options: Query3Options<T>,
   ): Promise<number | T | { records: T[]; pagination: PaginationResult }> {
@@ -271,7 +271,7 @@ export class Query3<T> {
     }
 
     // Nếu cache không tồn tại hoặc thời gian cache đã hết thì thực hiện query database
-    const result = await this.query3WithNormal(query, options);
+    const result = await this.queryWithNormal(query, options);
 
     // Nếu có cacheTimeMs thì thực hiện lưu cache
     if (cacheTimeMs && cacheTimeMs > 0) {
