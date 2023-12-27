@@ -14,7 +14,7 @@ export class SimpleLoggerService extends ConsoleLogger {
 
   // Lấy context và messages
   private getContextAndMessages(args: unknown[]) {
-    let context = this.context;
+    let context = process.env.SERVICE_NAME || this.context;
     let messages = args;
 
     // Nếu đối số cuối cùng là một chuỗi, nó là context

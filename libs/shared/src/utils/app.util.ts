@@ -1,6 +1,5 @@
 import { INestApplication } from '@nestjs/common';
 import * as fs from 'fs';
-import * as mustache from 'mustache';
 import * as yaml from 'js-yaml';
 
 export class AppUtils {
@@ -45,12 +44,19 @@ export class AppUtils {
     // Read the file content
     const raw = fs.readFileSync(path, 'utf8');
 
-    // Render the content with environment variables using Mustache
-    const custom = mustache.render(raw, process.env, {}, ['${', '}']);
+    // Replace environment variables in the content
+    const custom = this.replaceEnvVariables(raw);
 
     // Parse the custom content as YAML
     const data = yaml.load(custom);
 
     return data as T;
+  }
+
+  // Replace environment variables in the content
+  private static replaceEnvVariables(content: string): string {
+    return content.replace(/\${(\w+)}/g, (match, name) => {
+      return process.env[name] || match;
+    });
   }
 }

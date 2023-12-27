@@ -15,7 +15,7 @@ async function bootstrap() {
   // Start application
   // Note: This function will start all microservices
   await serviceBootstrap(app, {
-    serviceName: 'ServiceAccount',
+    serviceName: process.env.SERVICE_NAME,
     configPath: process.env.configfile || 'apps/service-account/service.config.yaml',
     servicePort: configService.get<number>('application.port') || 23700,
   });
