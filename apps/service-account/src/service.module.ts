@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { BootstrapModule } from '@skylinetech/core';
+import { ClientGrpcModule } from '@skylinetech/plugins';
 
 @Module({
   imports: [
@@ -9,7 +10,7 @@ import { BootstrapModule } from '@skylinetech/core';
     }),
     BootstrapModule.register({
       path: process.env.configfile || 'apps/service-account/service.config.yaml',
-      plugins: [], // Add plugins here
+      plugins: [ClientGrpcModule.forPlugin()], // Add plugins here
     }),
   ],
 })

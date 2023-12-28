@@ -37,7 +37,7 @@ export class GrpcTransporter extends BaseTransporter {
    */
   protected setupTransporter(): void {
     const configs = this.getTransporterConfigs(this.options);
-    const protoPath = fg.sync(configs.options.protoPath);
+    const protoPath = fg.sync(configs.options.connectionProtoPath);
 
     // If the transporter is not enabled, return.
     if (!configs.enable) {
