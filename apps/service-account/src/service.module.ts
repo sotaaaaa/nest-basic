@@ -1,17 +1,16 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { BootstrapModule } from '@skylinetech/core';
-import { ClientGrpcModule } from '@skylinetech/plugins';
+import { CoreModuleBootstrap } from '@skylinetech/core';
+import { AccountModule } from './account/account.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: process.env.envfile || 'apps/service-account/.env',
-    }),
-    BootstrapModule.register({
+    CoreModuleBootstrap.register({
       path: process.env.configfile || 'apps/service-account/service.config.yaml',
-      plugins: [ClientGrpcModule.forPlugin()], // Add plugins here
+      envFilePath: 'apps/service-account/.env',
     }),
+
+    // Add your modules here
+    AccountModule,
   ],
 })
 export class ServiceModule {}

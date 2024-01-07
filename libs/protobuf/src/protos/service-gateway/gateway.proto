@@ -1,14 +1,14 @@
 syntax = "proto3";
 
 // Định nghĩa tên gói cho tệp được tạo ra
-package com.skylinetech.service.account;
+package com.skylinetech.service.gateway;
 
 /**
  * Định nghĩa tất cả các phương thức RPC cho dịch vụ.
  * Các hàm được định nghĩa theo định dạng sau:
  * rpc <tên_hàm>(<tin_nhắn_yêu_cầu>) returns (<tin_nhắn_phản_hồi>) {}
  */
-service AccountService {
+service GatewayService {
   /**
    * HealthCheck là một phương thức RPC đơn lẻ kiểm tra trạng thái sức khỏe của dịch vụ
    * cổng.
@@ -17,7 +17,15 @@ service AccountService {
    * @return HealthCheckResponse - Tin nhắn phản hồi chứa trạng thái sức khỏe của dịch vụ
    * cổng.
    */
-  rpc pingService(Empty) returns (PingServiceResponse) {}
+  rpc HealthCheck(Empty) returns (ServiceResponse) {}
+
+  /**
+   * GetConfigs là một phương thức RPC đơn lẻ lấy cấu hình của dịch vụ cổng.
+   *
+   * @param Empty - Một tin nhắn yêu cầu trống.
+   * @return GetConfigResponse - Tin nhắn phản hồi chứa cấu hình của dịch vụ cổng.
+   */
+  rpc GetConfigs(Empty) returns (ServiceResponse) {}
 }
 
 /**
@@ -27,7 +35,10 @@ service AccountService {
  */
 message Empty {}
 
-message PingServiceResponse {
-  bool serviceIsAlive = 1;
-  string serviceName  = 2;
+message ServiceResponse {
+  int32 code             = 1;
+  string timestamp       = 2;
+  string message         = 3;
+  string data            = 4;
+  repeated string errors = 5;
 }

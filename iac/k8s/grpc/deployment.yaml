@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-grpc-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-grpc-service
+  template:
+    metadata:
+      labels:
+        app: my-grpc-service
+    spec:
+      containers:
+      - name: my-grpc-service
+        image: my-docker-hub-username/my-grpc-service:latest
+        ports:
+        - containerPort: 50051

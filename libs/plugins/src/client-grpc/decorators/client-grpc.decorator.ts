@@ -1,19 +1,29 @@
-import { ExecutionContext, Inject, createParamDecorator } from '@nestjs/common';
 import { ClientGrpcExtraService } from './../service/client-grpc.service';
+import { ExecutionContext, Inject, createParamDecorator } from '@nestjs/common';
 
 /**
- * Decorator function to inject a gRPC client service.
+ * Decorator function that creates a client gRPC service.
  *
+ * @param clientName - The name of the gRPC client.
  * @param serviceName - The name of the gRPC service.
- * @returns A decorator function.
+ * @returns A decorator function that injects the gRPC client and defines a getter for the gRPC service.
  */
-export function ClientGrpcService(serviceName: string) {
-  return (target: any, key: string) => {
+export function ClientGrpcService(clientName: string, serviceName: string) {
+  return function (target: object, propertyKey: string) {
+    Inject(clientName)(target, 'clientGrpc');
     Inject(ClientGrpcExtraService)(target, 'clientGrpcExtraService');
-    Object.defineProperty(target, key, {
-      get: function () {
-        return this.clientGrpcExtraService.getService(serviceName);
-      },
+
+    // Create a getter for the gRPC service
+    const getter = function () {
+      return this.clientGrpcExtraService.getService(this.clientGrpc, serviceName);
+    };
+
+    // Redefine the property
+    Reflect.deleteProperty(target, propertyKey);
+    Reflect.defineProperty(target, propertyKey, {
+      get: getter,
+      enumerable: true,
+      configurable: true,
     });
   };
 }
@@ -40,6 +50,21 @@ export const GrpcPayload = createParamDecorator(
 export const GrpcMetadata = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const [, , metadata] = ctx.getArgs();
-    return metadata;
+    const metadataMap = metadata.metadata.internalRepr;
+
+    // If a key is provided, return the first value for that key
+    if (typeof data === 'string') {
+      const value = metadataMap.get(data);
+      return Array.isArray(value) ? value[0] : value;
+    }
+
+    // If no key is provided, convert the Map to an object and return it
+    const metadataObject = {};
+    for (const [key, value] of metadataMap.entries()) {
+      metadataObject[key] = Array.isArray(value) ? value[0] : value;
+    }
+
+    // Return the metadata object
+    return metadataObject;
   },
 );

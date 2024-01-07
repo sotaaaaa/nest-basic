@@ -1,2 +1,2 @@
-export * from './module.bootstrap';
+export * from './plugin.bootstrap';
 export * from './types';

@@ -1,4 +1,4 @@
-import { AppUtils } from '@skylinetech/shared/utils';
+import { AppUtils } from '@skylinetech/shared';
 import {
   ServiceBootstrapOptions,
   TransportSetupOtions,

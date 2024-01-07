@@ -19,11 +19,10 @@ export class ErrorException extends HttpException {
       // Return success response with custom status code
       super({ code: error, message: AppConstants.errors.defaultMessage }, HttpStatus.OK);
     } else {
-      const errorResponse = (error as ErrorResponse) || {};
-      const errorMessage = errorResponse['message'] || AppConstants.errors.defaultMessage;
+      const errorMessage = error.message ?? AppConstants.errors.defaultMessage;
 
       // Return error response with custom status code
-      super({ ...errorResponse, message: errorMessage }, HttpStatus.OK);
+      super({ ...error, message: errorMessage }, HttpStatus.OK);
     }
   }
 }

@@ -1,21 +1,18 @@
 import APM from 'elastic-apm-node';
-import { ClientGrpc } from '@nestjs/microservices';
-import {
-  CLIENT_GRPC,
-  CLIENT_GRPC_ELASTIC_APM,
-} from './../constants/client-grpc.constant';
+import { CLIENT_GRPC_ELASTIC_APM } from './../constants/client-grpc.constant';
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ClientGrpc } from '@nestjs/microservices';
+import { Metadata } from '@grpc/grpc-js';
 
 @Injectable()
 export class ClientGrpcExtraService implements OnModuleInit {
-  public logger = new Logger(this.constructor.name);
-  public timeout: number = 30000;
+  private logger = new Logger(this.constructor.name);
+  private timeout = 30000;
 
   constructor(
-    @Inject(CLIENT_GRPC) private readonly clientGrpc: ClientGrpc,
-    @Inject(CLIENT_GRPC_ELASTIC_APM) private readonly elasticAPM: APM.Agent,
-    private readonly configService: ConfigService,
+    @Inject(CLIENT_GRPC_ELASTIC_APM) private elasticAPM: APM.Agent,
+    private configService: ConfigService,
   ) {}
 
   // This method is called when the module is initialized
@@ -25,59 +22,94 @@ export class ClientGrpcExtraService implements OnModuleInit {
     this.logger.log(`Client GRPC initialized with timeout ${this.timeout}`);
   }
 
-  // Create a proxy for the service object
+  /**
+   * This method creates a proxy for a service object.
+   * The proxy intercepts function calls on the service object and wraps them with the `callServiceMethod` method.
+   * This allows to automatically track the performance of all service method calls with Elastic APM.
+   *
+   * @param service - The service object to create a proxy for.
+   * @returns The proxy for the service object.
+   */
   private createServiceProxy<T extends object>(service: T): T {
-    return new Proxy(service, {
-      get: (target, prop: string) => {
-        const originalFunction = target[prop];
-        if (typeof originalFunction === 'function') {
-          // Intercept method calls and wrap them with error handling and APM tracing
-          return (...args: any[]) => this.callServiceMethod(target, prop, args);
+    // Define the handler for the proxy
+    const handler = {
+      // The get trap is called when a property is read from the proxy
+      get: (target, propKey) => {
+        // Get the original property value
+        const originalMethod = target[propKey];
+
+        // If the property is a function, return a proxy function that wraps the call with `callServiceMethod`
+        if (typeof originalMethod === 'function') {
+          // Pass the propKey as the method name to callServiceMethod
+          return (...args) =>
+            this.callServiceMethod(propKey as string, originalMethod, args);
         }
-        return originalFunction;
+
+        // If the property is not a function, return the original property value
+        return originalMethod;
       },
-    }) as T;
+    };
+
+    // Create and return the proxy for the service object
+    return new Proxy(service, handler);
   }
 
-  // Call a service method with error handling and APM tracing
-  private callServiceMethod(target: any, methodName: string, args: any[]) {
-    // Start a new APM transaction and span
-    const transaction = this.elasticAPM.startTransaction(
-      `GRPC Call method: ${methodName}`,
-    );
-    const span = transaction.startSpan(`GRPC Call method: ${methodName}`);
+  /**
+   * This method wraps a gRPC service method call with an Elastic APM span.
+   * It starts a new span before the method call, and ends the span when the method call is completed.
+   * If the method call returns a Promise, the span is ended in the finally block.
+   * If an error occurs during the method call, the error is captured by Elastic APM and the span is ended.
+   *
+   * @param method - The gRPC service method to call.
+   * @param args - The arguments to pass to the method.
+   * @returns The result of the method call.
+   */
+  private callServiceMethod(methodName: string, method: any, args: any) {
+    // Start a new Elastic APM span for the gRPC method call
+    const currentTraceparent = this.elasticAPM.currentTraceparent || 'none';
+    const traceId = this.elasticAPM.currentTraceIds['trace.id'] || 'none';
+    const span = this.elasticAPM.startSpan(`gRPC ${methodName}`, 'custom');
 
-    // Call the original service method and handle timeouts
-    const resultPromise = target[methodName](...args);
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => {
-        // Capture an error in APM
-        this.elasticAPM.captureError(new Error('Timeout'));
+    try {
+      // Create a new Metadata object
+      const metadata = new Metadata();
 
-        // Log the error
-        this.logger.error(`GRPC timeout calling method ${methodName}`);
+      // Add the currentTraceparent and traceId to the metadata
+      metadata.add('current-traceparent', currentTraceparent);
+      metadata.add('trace-id', traceId);
 
-        // Reject the result promise and capture an error
-        reject(new Error('Timeout'));
-      }, this.timeout);
-    });
+      // Add the metadata as the last argument to the method call
+      const result = method.apply(this, [...args, metadata]);
 
-    // Race between the result promise and the timeout promise
-    const result = Promise.race([resultPromise, timeoutPromise]);
+      // If the result is a Promise, end the span in the finally block
+      if (result && typeof result.finally === 'function') {
+        return result.finally(() => span && span.end());
+      }
 
-    // End the APM span and transaction when the result promise is settled
-    result.finally(() => {
-      span.end();
-      transaction.end();
-    });
+      // If the result is not a Promise, end the span immediately
+      span && span.end();
 
-    // Return the result promise
-    return result;
+      // Return the result of the method call
+      return result;
+    } catch (error) {
+      // If an error occurs, capture the error with Elastic APM and end the span
+      if (span) {
+        this.elasticAPM.captureError(error);
+        span.end();
+      }
+
+      // Re-throw the error to be handled by the caller
+      throw error;
+    }
   }
 
   // Get a service object by name and create a proxy for it
-  getService<T extends object>(serviceName: string): T {
-    const service = this.clientGrpc.getService<T>(serviceName);
+  public getService<T extends object>(clientGrpc: ClientGrpc, serviceName: string): T {
+    /**
+     * This method returns a service object by name.
+     * The service object is a gRPC client that can be used to make calls to the service.
+     */
+    const service = clientGrpc.getService<T>(serviceName);
     return this.createServiceProxy(service);
   }
 }

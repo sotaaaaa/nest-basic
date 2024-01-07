@@ -1,9 +1,15 @@
 import { ClientGrpcExtraService } from './service/client-grpc.service';
-import { CLIENT_GRPC, CLIENT_GRPC_ELASTIC_APM } from './constants/client-grpc.constant';
+import { CLIENT_GRPC_ELASTIC_APM } from './constants/client-grpc.constant';
 import { DynamicModule, Global, Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ElasticApmService } from '@skylinetech/plugins/elastic-apm';
+import { AppUtils } from '@skylinetech/shared';
+import {
+  ClientsModule,
+  ClientsProviderAsyncOptions,
+  GrpcOptions,
+  Transport,
+} from '@nestjs/microservices';
+import * as _ from 'lodash';
 import * as fg from 'fast-glob';
 
 @Global()
@@ -15,24 +21,31 @@ export class ClientGrpcModule {
    * It registers a gRPC client with the specified options.
    * It also provides the ElasticApmService instance for the gRPC client.
    */
-  static forPlugin(): DynamicModule {
-    // List of imported dynamic modules
-    const imports: DynamicModule[] = [
-      ClientsModule.registerAsync([
-        {
-          name: CLIENT_GRPC,
-          inject: [ConfigService],
-          useFactory: (configService: ConfigService) => {
-            const options = configService.get('transporters.grpc.options');
+  static forPlugin(configPath: string): DynamicModule {
+    // Load the configuration file
+    const configs = AppUtils.loadYamlFile(configPath);
 
-            // Dynamic module configuration
-            return {
-              transport: Transport.GRPC,
-              options: { ...options, protoPath: fg.sync(options.grpcClientProtoPath) },
-            };
+    // Get the gRPC clients from the configuration
+    const grpcClients: [GrpcOptions & { name: string }] =
+      _.get(configs, 'transporters.grpc-clients') || [];
+
+    // Generate all grpc clients from the configuration
+    const clients: ClientsProviderAsyncOptions[] = grpcClients.map((client) => ({
+      name: client.name,
+      useFactory: () => {
+        return {
+          transport: Transport.GRPC,
+          options: {
+            ...client.options,
+            protoPath: fg.sync(client.options.protoPath),
           },
-        },
-      ]),
+        };
+      },
+    }));
+
+    // Import the configuration module.
+    const imports: DynamicModule[] = [
+      ClientsModule.registerAsync({ isGlobal: true, clients: clients }),
     ];
 
     // Return module configuration

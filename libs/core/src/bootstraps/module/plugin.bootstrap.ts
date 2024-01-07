@@ -1,8 +1,8 @@
-import { ModuleBootstrapRegister } from './types/module.type';
+import { CorePluginRegister } from './types/module.type';
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ElasticApmPluginModule, WinstonPluginModule } from '@skylinetech/plugins';
-import { AppUtils } from '@skylinetech/shared/utils';
+import { AppUtils } from '@skylinetech/shared';
 
 /**
  * Represents a module used for bootstrapping the application.
@@ -10,13 +10,13 @@ import { AppUtils } from '@skylinetech/shared/utils';
  */
 @Global()
 @Module({})
-export class BootstrapModule {
+export class CorePluginModule {
   /**
    * Registers the module with the specified options.
    * @param options - The options for configuring the module.
    * @returns A dynamic module object that can be imported into the application.
    */
-  static register(options: ModuleBootstrapRegister): DynamicModule {
+  static register(options: CorePluginRegister): DynamicModule {
     const configs = AppUtils.loadYamlFile(options.path);
     const importPlugins = options?.plugins || [];
 
@@ -38,7 +38,7 @@ export class BootstrapModule {
 
     // Return the dynamic module.
     return {
-      module: BootstrapModule,
+      module: CorePluginModule,
       imports: imports,
     };
   }

@@ -4,7 +4,7 @@
 PROJECT_DIR="./apps"
 
 # Đường dẫn đến thư mục đầu ra cho interfaces
-INTERFACE_DIR="./libs/types/src/generate/_schemas"
+INTERFACE_DIR="./libs/types/src/generated/_schemas"
 
 # Tạo thư mục đích nếu không tồn tại
 mkdir -p "$INTERFACE_DIR"

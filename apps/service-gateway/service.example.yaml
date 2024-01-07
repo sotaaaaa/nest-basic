@@ -26,23 +26,16 @@ transporters:
   # Cấu hình GRPC khi connect đến microservice
   # Timeout là thời gian chờ response khi gửi message
   grpc:
-    enable: false
+    enable: true
     options:
       url: localhost:50051
-      package: com.skylinetech.service.account
-      protoPath: libs/protobuf/src/protos/service-account/**/*.proto
+      package: com.skylinetech.service.gateway
+      protoPath: libs/protobuf/src/protos/service-gateway/**/*.proto
     timeout: 30000
 
-  # Khi muốn gọi đến nhiều service thì có thể thêm nhiều cấu hình như dưới
-  # Điều này là bắt buộc khi muốn gọi đến các service khác, chỉ define các service cần gọi
-  # Cần chú ý đặt tên vì tên này sẽ được inject vào service để sử dụng
+  # Cấu hình GRPC khi connect đến service
+  # Nếu muốn gọi đến nhiều service thì có thể thêm nhiều cấu hình như dưới
   grpc-clients:
-    - name: ServiceGateway
-      options:
-        url: localhost:50051
-        package: com.skylinetech.service.gateway
-        protoPath: libs/protobuf/src/protos/service-gateway/*.proto
-      timeout: 30000
 
 # Cấu hình này được thêm bởi thư viện @sotaaaaa/nest-mongoose
 # Có thể tạo nhiều kết nối đến nhiều database cùng một lúc
@@ -50,7 +43,7 @@ transporters:
 database:
   mongoose:
     - connectionName: ${DATABASE_CONNECTION_NAME}
-      uri: mongodb://localhost:27017/service-buyer
+      uri: mongodb://localhost:27017/service-gateway
       options:
         useNewUrlParser: true
         useUnifiedTopology: true

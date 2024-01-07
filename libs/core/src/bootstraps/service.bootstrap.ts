@@ -1,6 +1,6 @@
 import { ValidationPipe } from './../pipes/validation.pipe';
 import { CoreTransporter } from './../transporters/core.transporter';
-import { AppUtils } from '@skylinetech/shared/utils';
+import { AppUtils } from '@skylinetech/shared';
 import { ServiceBootstrapOptions } from './types/bootstrap.type';
 import { INestApplication, Logger } from '@nestjs/common';
 import { SimpleLoggerService } from '@skylinetech/plugins';
