@@ -4,6 +4,7 @@ import { ClientGrpcService } from '@skylinetech/plugins';
 import {
   ACCOUNT_SERVICE_NAME,
   AccountServiceClient,
+  PingServiceResponse,
 } from '@skylinetech/protobuf/protobufs/account.pb';
 
 @Controller()
@@ -14,7 +15,7 @@ export class HealthController {
   // Health check service account
   @Get('/services/account/ping')
   @GatewayToClient()
-  async pingServiceAccount(): Promise<any> {
+  async pingServiceAccount(): Promise<PingServiceResponse> {
     const response = await this.accountService.pingService({}).toPromise();
     return response;
   }
