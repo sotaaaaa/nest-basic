@@ -54,7 +54,10 @@ export class ErrorExceptionFilter implements ExceptionFilter {
     if (!isHttpRequest) {
       // Omit properties with undefined values for lodash.
       const responseWithoutUndefined = _.omitBy(errorResponse, _.isUndefined);
-      throw new RpcException(JSON.stringify(responseWithoutUndefined));
+      const rpcErrorResponse = JSON.stringify(responseWithoutUndefined);
+
+      // Throw the error response.
+      throw new RpcException(rpcErrorResponse);
     }
 
     // If there is a response object (i.e., if we are in an HTTP context), send the error response.
